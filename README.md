@@ -2,7 +2,7 @@
 
 This Git repository contains our implementation of some protocols of public key cryptography as part of our master's degree dissertation *State of the art of tropical cryptography, 2021*.
 
-This Git repository contains our implementation of the following protocols of tropical cryptography:
+It contains our implementation of the following protocols of tropical cryptography:
 - *Tropical cryptography I, 2014* by D. Grigoriev and V. Shpilrain: both protocols.
   - `tropical_stickel.sage` for the first protocol.
   - `tropical_public_key_encryption` for the second protocol *(not added yet)*.
