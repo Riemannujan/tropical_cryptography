@@ -6,11 +6,11 @@ It contains our implementation of the following protocols of tropical cryptograp
 - *Tropical cryptography I, 2014* by D. Grigoriev and V. Shpilrain: both protocols.
   - `tropical_stickel.sage` for the first protocol.
   - `tropical_public_key_encryption.sage` for the second protocol *(not added yet)*.
-- *Tropical cryptography II, 2018* by D. Grigoriev and V. Shpilrain: both protocols.
-  - `tropical_semidirect_product.sage` for both *(not added yet)*.
+- *Tropical cryptography II, 2018* by D. Grigoriev and V. Shpilrain: first protocol.
+  - `tropical_semidirect_product.sage`.
 - *Modifying the tropical version of Stickel's key exchange protocol, 2019* by A. Muanalifah and S. Sergeev: both protocols.
-  - `tropical_linde_delapuente.sage` for the protocol based on Linde-De La Puente matrices *(not added yet)*.
-  - `tropical_jones.sage` for the protocol based on Jones matrices *(not added yet)*.
+  - `tropical_linde_delapuente.sage` for the protocol based on Linde-De La Puente matrices.
+  - `tropical_jones.sage` for the protocol based on Jones matrices.
   - `model.lp` and `tropical_jones.py` for the ASP implementation used in `tropical_jones.sage`. The environment Clyngo (https://github.com/potassco/clingo) is required to run those files.
 
 It contains the implementation of two standard protocols, on which tropical schemes are based:
@@ -21,7 +21,7 @@ Finally, the implementation of attacks on the above tropical protocols:
 - *Analysis of a key exchange protocol based on tropical matrix algebra, 2018* by M. Kotov and A. Ushakov: both attacks.
   - `tropical_stickel.sage` for the heuristic attack *(not added yet)*.
   - `tropical_simplex.sage` for the full attack based on the simplex algortihm. This implementation belongs to M. Kotov and A. Ushakov. Their original implementation in Gap is available at https://github.com/mkotov/tropical *(not added yet)*.
-- *Remarks on a tropical key exchange system, 2020* by D. Rudy and C. Monico: `tropical_semidirect_product_attack.sage` *(not added yet)*.
+- *Remarks on a tropical key exchange system, 2020* by D. Rudy and C. Monico: `tropical_semidirect_product_attack.sage`.
 
 A last file `tropical_algebra.sage` contains the implementation of general functions essential for most of our functions.
 
