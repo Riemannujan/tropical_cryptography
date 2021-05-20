@@ -2,124 +2,162 @@ import numpy as np
 
 T = TropicalSemiring(ZZ)
 
-# Generates tropical zero matrix of size nxm
+"""
+	Basic commands for tropical algebra, including in particular
+		- Creation and operation of tropical matrices
+		- Creation and operation of tropical polynomials
+
+	 Functions follow these notations:
+		M: matrix in Mat(ZZ)
+		A, B: matrix in Mat(T(ZZ))
+		n, m: non-negative integers, size of a matrix
+		minM, maxM: integers, range of matrices coefficients
+		infty: boolean, True to add T.zero()
+		P: tropical polynomial
+		minP, maxP: integers, range of polynomials coefficients
+		D: positive integer, degree of the polynomial
+"""
+
+def T_rows(A):
+	" Out: number of rows of A "
+	return len(A)
+
+def T_cols(A):
+	" Out: number of columns of A "
+	return len(np.asarray(A)[0])
+
 def T_zero_matrix(n, m):
-    A = np.matrix([[T.zero() for i in range(m)] for j in range(n)])
-    return A
+	""" In: n, m: positive integers
+		Out: tropical zero matrix of size n*m """
+	A = np.matrix([[T.zero() for i in range(m)] for j in range(n)])
+	return A
 
-# Generates tropical identity matrix of size nxm
 def T_identity_matrix(n):
-    A = T_zero_matrix(n, n)
-    for i in range(n):
-        A[i,i] = T.one()
-    return A
+	""" In: n: positive integers
+		Out: tropical identity matrix of size n*n """
+	A = T_zero_matrix(n, n)
+	for i in range(n):
+		A[i,i] = T.one()
+	return A
 
-# Converts a matrix from Mat(ZZ, n) to Mat(T(ZZ),n)
-def T_matrix(A):
-    size = A.ncols()
-    B = T_zero_matrix(size, size)
-    for i in range(size):
-        for j in range(size):
-            if (A[i,j] == +infinity):
-                B[i,j] = T.zero()
-            else:
-                B[i,j] = T(A[i,j])
-    return B
+def T_diagonal_matrix(n, minM, maxM):
+	""" In: n: positive integer
+			minM, maxM: integers, range of coefficients
+		Out: diagonal matrix of size n """
+	A = T_identity_matrix(n)
+	for i in range(n):
+		A[i,i] = T(randint(minM, maxM))
+	return A
 
-# Generates a random matrix A in Mat(ZZ, n), a_ij in [min, max-1]
-# with or without infinity
-def T_random_matrix(n, min, max, bool):
-    if bool == True:
-        random = T_matrix(random_matrix(ZZ, n, x = min, y = max+1))
-    else:
-        random = T_matrix(random_matrix(ZZ, n, x = min, y = max))
-    for i in range(n):
-        for j in range(n):
-            if random[i,j] == T(max):
-                random[i,j] = T.zero()
-    return random
+def T_matrix(M):
+	""" In: M: matrix over M(ZZ)
+		Out: tropical matrix corresponding to M """
+	n, m = M.nrows(), M.ncols()
+	A = T_zero_matrix(n, m)
+	for i in range(n):
+		for j in range(m):
+			A[i,j] = T(M[i,j])
+	return A
 
-# Generates a random polynomial p in ZZ[x] of degree d, d in [1, D], p_i in [min, max-1].
-def T_random_polynomial(D, min, max, bool):
-    d = randint(1, D)
-    if bool == True:
-        coef = Set([T.zero()] + [T(i) for i in [min..max]])
-    else:
-        coef = Set([T(i) for i in [min..max]])
-    L = [coef.random_element() for i in range(d+1)]
-    return L
+def T_random_matrix(n, m, minM, maxM, infty):
+	""" In: n, m: positive integers, size of the matrix
+			minM, maxM: integers, range of the coefficients
+			infty: boolean, with or without +infinity
+	    Out: tropical random matrix following the given parameters """
+	if not infty:
+		return T_matrix(random_matrix(ZZ, n, m, x = minM, y = maxM + 1))
+	else:
+		# Add the integer max + 2 in order to convert it to +infinity
+		A = T_matrix(random_matrix(ZZ, n, m, x = minM, y = maxM + 2))
+		for i in range(n):
+			for j in range(m):
+				if A[i,j] == T(maxM + 1):
+					A[i,j] = T.zero()
+		return A
 
-# Input: tropical scalar, size of matrix
-# Output: the tropical corresponding matrix
-def scalar2matrix(p, n):
-    return p*T_identity_matrix(n)
+def T_random_polynomial(D, minP, maxP):
+	""" In: D: positive integer, degree of the polynomial
+			minP, maxP: integers, range of the coefficients
+		Out: polynomial in T(ZZ)[X] of degree <= D, coefficients between minP and maxP) """
+	d = randint(2, D + 1)
+	A = T_random_matrix(d, d, minP, maxP, False)
+	P = list(np.asarray(A[0])[0])
+	return P
 
-# Input: polynomial deg>0 (as a list from a0 to an-1), tropical matrix A
-# Output: P(A)
 def T_evaluate(P, A):
-    size = len(A)
-    B = scalar2matrix(P[0], size)
-    for i in [1..len(P)-1]:
-        B = B + P[i]*A**i
-    return B
-
-# Test equality between 2 square tropical matrix
-def T_matrix_eq (A, B):
-    size = len(A)
-    if size != len(B):
-        return false
-    for i in range(size):
-        for j in range(size):
-            if A[i,j] != B[i,j]:
-                return False
-    return True
-
-def T_power(A,n):
-	B = A
-	for i in range(n-1):
-		B = B*A
+	""" In: P: tropical polynomial
+			A: tropical matrix
+		Out: P(A) the evaluation of A by P """
+	B = P[0] * T_identity_matrix(T_rows(A))
+	for i in [1..len(P) - 1]:
+		B += P[i] * A**i
 	return B
 
+def T_matrix_eq (A, B):
+	""" In: A, B: tropical matrices
+		Out: boolean, True if A == B """
+	n = T_rows(A)
+	for i in range(n):
+		for j in range(n):
+			if A[i,j] != B[i,j]:
+				return False
+	return True
+
+def T_matrix_less(A, B):
+	""" In: A, B: tropical matrices
+		Out: True if A <= B """
+	for i in range(T_rows(A)):
+		for j in range(T_cols(A)):
+			if A[i,j] > B[i,j]:
+				return False
+	return True
+
+def T_power(A, p):
+	""" In: A: tropical matrix
+			p: non-negative integer
+		Out: A**p the p-th power of A """
+	if p == 0:
+		return T_identity_matrix(T_rows(A))
+	return A**p
+
 def T_check_constant_matrix(A):
+	""" In: A: tropical matrix
+		Out: boolean, True if A = (c)_ij """
 	c = A[0,0]
 	i = 0
-	while i < len(A):
+	while i < T_rows(A):
 		j = 0
-		while j < len(A):
+		while j < T_cols(A):
 			if A[i,j] != c:
-				return false
+				return False
 			j += 1
 		i += 1
-	return true
+	return True
 
 def T_check_non_infinite_matrix(A):
+	""" In: A: tropical matrix
+		Out: boolean, False if T.zero() appears in A """
 	i = 0
-	while i < len(A):
+	while i < T_rows(A):
 		j = 0
-		while j < len(A):
+		while j < T_cols(A):
 			if A[i,j] is T.zero():
 				return false
 			j += 1
 		i += 1
 	return true
 
-def T_matrix_substraction(A,B):
-	n = len(A)
-	if n != len(B):
-		return "FAIL A and B don't have the same size"
-	L = []
-	i = 0
-	while i < n:
-		j = 0
-		C = []
-		while j < n:
-			if (B[i,j] == T.zero()):
-				return "FAIL B has infinite coeff"
-			if (A[i,j] == T.zero()):
-				C += [T.zero()]
-			else :
-				C += [ ZZ(A[i,j]) - ZZ(B[i,j])]
-			j += 1
-		L += [C]
-		i += 1
-	return np.matrix(L)
+def T_matrix_substraction(A, B):
+	""" In: A, B: tropical matrices
+		Out: A - B the usual substraction """
+	n, m = T_rows(A), T_cols(A)
+	if n != T_rows(B) or m != T_cols(B):
+		return 'FAIL: A and B do not have the same size'
+	C = T_zero_matrix(n, m)
+	for i in range(n):
+		for j in range(m):
+			if B[i,j] is T.zero():
+				return 'FAIL: B has infinite coefficients'
+			C[i,j] = A[i,j] / B[i,j]
+	return C
+
