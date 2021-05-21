@@ -11,7 +11,7 @@ It contains our implementation of the following protocols of tropical cryptograp
 - *Modifying the tropical version of Stickel's key exchange protocol, 2019* by A. Muanalifah and S. Sergeev: both protocols.
   - `tropical_linde_delapuente.sage` for the protocol based on Linde-De La Puente matrices.
   - `tropical_jones.sage` for the protocol based on Jones matrices.
-  - `model.lp` and `tropical_jones.py` for the ASP implementation used in `tropical_jones.sage`. The environment Clyngo (https://github.com/potassco/clingo) is required to run those files.
+  - `model.lp` and `tropical_jones.py` for the ASP implementation used in `tropical_jones.sage`. The environment Clingo (https://github.com/potassco/clingo) is required to run those files.
 
 It contains the implementation of two standard protocols, on which tropical schemes are based:
 - The Diffie-Hellman public key exchange protocol over <a href="https://www.codecogs.com/eqnedit.php?latex=\mathbb{Z}/n\mathbb{Z}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathbb{Z}/n\mathbb{Z}" title="\mathbb{Z}/n\mathbb{Z}" /></a> in `diffie_hellman.sage` *(not added yet)*.
