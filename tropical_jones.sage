@@ -18,8 +18,8 @@ load('jones_asp.py')
 
 # Suggested parameters
 n = 10
-minM = -10
-maxM = 10
+minM = -10**10
+maxM = 10**10
 D = 10
 minP = -10**10
 maxP = 10**10
@@ -87,7 +87,7 @@ def generate_jones_matrix(n, minM, maxM):
 		4) Secret key is p1(A)*V*p2(B) = q1(A)*U*q2(B)
 """
 
-def jones_shared_keys(n, minM, maxM):
+def jones_public_key(n, minM, maxM):
 	""" In: n: positive integer, size of the matrix
 			minM, maxM: integers, range of the coefficients
 		Out: 2 Jones matrices of size n """
@@ -95,7 +95,7 @@ def jones_shared_keys(n, minM, maxM):
 	B = generate_jones_matrix(n, minM, maxM)
 	return [A, B]
 
-def jones_public_keys(A, B, D, minP, maxP):
+def jones_private_key(A, B, D, minP, maxP):
 	""" In: A,B: tropcal matrices, public shared keys
 			D: positive integer, size of the polynomial
 			minP, maxP: integers, range of the coefficients
@@ -108,7 +108,7 @@ def jones_public_keys(A, B, D, minP, maxP):
 	evB = apply_quasi_polynomial(p2, B)
 	return [evA, evB, evA * evB]
 
-def jones_private_key(evA, evB, V):
+def jones_secret_key(evA, evB, V):
 	""" In: evA, evB: tropical matrices, private keys
 			V: public tropical matrix received
 		Out: private key """
@@ -120,10 +120,10 @@ def test_jones(n, minM, maxM, D, minP, maxP):
 			D: positive integer, degree of the polynomial
 			minP, maxP: integers, range of the coefficients
 		Out: True if the private keys computed are equal """
-	[A, B] = jones_shared_keys(n, minM, maxM)
-	[evpA, evpB, U] = jones_public_keys(A, B, D, minP, maxP)
-	[evqA, evqB, V] = jones_public_keys(A, B, D, minP, maxP)
-	Kalice = jones_private_key(evpA, evpB, V)
-	Kbob = jones_private_key(evqA, evqB, U)
+	[A, B] = jones_public_key(n, minM, maxM)
+	[evpA, evpB, U] = jones_private_key(A, B, D, minP, maxP)
+	[evqA, evqB, V] = jones_private_key(A, B, D, minP, maxP)
+	Kalice = jones_secret_key(evpA, evpB, V)
+	Kbob = jones_secret_key(evqA, evqB, U)
 	return Kalice == Kbob
 
