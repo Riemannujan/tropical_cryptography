@@ -38,4 +38,3 @@ def jones_asp(n_it, n_mat, val):
 		show = show.replace("],]", "]]")
 
 	return(show)
-
