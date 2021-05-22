@@ -4,8 +4,8 @@ T = TropicalSemiring(ZZ)
 
 """
 	Basic commands for tropical algebra, including in particular
-		- Creation and operation of tropical matrices
-		- Creation and operation of tropical polynomials
+		- Creation and operation on tropical matrices
+		- Creation and operation on tropical polynomials
 
 	 Functions follow these notations:
 		M: matrix in Mat(ZZ)
@@ -19,11 +19,11 @@ T = TropicalSemiring(ZZ)
 """
 
 def T_rows(A):
-	" Out: number of rows of A "
+	" Out: number of rows of tropical matrix A "
 	return len(A)
 
 def T_cols(A):
-	" Out: number of columns of A "
+	" Out: number of columns of tropical matrix A "
 	return len(np.asarray(A)[0])
 
 def T_zero_matrix(n, m):
