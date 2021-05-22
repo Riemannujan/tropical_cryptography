@@ -15,8 +15,8 @@ load('tropical_class.sage')
 
 # Suggested parameters
 n = 10
-minM = -10
-maxM = 10
+minM = -10**10
+maxM = 10**10
 infty = False
 
 
@@ -66,17 +66,27 @@ def generate_linde_matrix(n, r, k, infty):
 		4) Secret key is A1*V*A2 = B1*U*B2
 """
 
-def linde1_public_keys(n, minM, maxM, W, infty):
+def linde_public_key(n, minM, maxM, infty):
 	""" In: n: positive integer, size of the matrix
 			minM: negative integer, minimum of the matrix
-			maxM: positive integer, maximum of the matrix """
+			maxM: positive integer, maximum of the matrix
+			infty: boolean, True to add +infinity in the entries """
+	return T_random_matrix(n, n, minM, maxM, infty)
+
+def linde1_private_key(n, minM, maxM, W, infty):
+	""" In: n: positive integer, size of the matrix
+			minM: negative integer, minimum of the matrix
+			maxM: positive integer, maximum of the matrix
+			W: tropical matrix, public key
+			infty: boolean, True to add +infinity in the entries
+		Out: [A1, A2] the private keys, U = A1*W*A2 sent to Bob """
 	a, b = randint(1, maxM//2), randint(1, maxM//2)
 	k1, k2 = randint(minM, 0), randint(minM, 0)
 	A1 = generate_linde_matrix(n, a, k1, infty)
 	A2 = generate_linde_matrix(n, b, k2, infty)
 	return [[A1, A2], A1 * W * A2]
 
-def linde_private_key(private, V):
+def linde_secret_key(private, V):
 	""" In: private: [A1, A2] tropical matrices
 			V: public tropical matrix received
 		Out: private shared key A1 * V * A2 """
@@ -87,11 +97,11 @@ def test_linde1(n, minM, maxM, infty):
 			minM, maxM: integers, range of the coefficients
 			infty: boolean, with or without infty
 		Out: True if the private keys are the same """
-	W = T_random_matrix(n, n, minM, maxM, infty)
-	Alice = linde1_public_keys(n, minM, maxM, W, infty)
-	Bob = linde1_public_keys(n, minM, maxM, W, infty)
-	Kalice = linde_private_key(Alice[0], Bob[1])
-	Kbob = linde_private_key(Bob[0], Alice[1])
+	W = linde_public_key(n, minM, maxM, infty)
+	Alice = linde1_private_key(n, minM, maxM, W, infty)
+	Bob = linde1_private_key(n, minM, maxM, W, infty)
+	Kalice = linde_secret_key(Alice[0], Bob[1])
+	Kbob = linde_secret_key(Bob[0], Alice[1])
 	return Kalice == Kbob
 
 """
@@ -107,7 +117,7 @@ def test_linde1(n, minM, maxM, infty):
 
 """
 
-def linde2_public_keys(n, minM, maxM, W, k, l, infty, Alice):
+def linde2_private_key(n, minM, maxM, W, k, l, infty, Alice):
 	""" In: n: positive integer, size of the matrix
 			minM, maxM: integers, range of the entries
 			W: public tropical matrix
@@ -128,11 +138,11 @@ def test_linde2(n, minM, maxM, infty):
 			minM, maxM: integers, range of the coefficients
 			infty: boolean, with or without infty
 		Out: True if the private keys are the same """
-	W = T_random_matrix(n, n, minM, maxM, infty)
+	W = linde_public_key(n, minM, maxM, infty)
 	k, l = randint(minM, 0), randint(minM, 0)
-	Alice = linde2_public_keys(n, minM, maxM, W, k, l, infty, True)
-	Bob = linde2_public_keys(n, minM, maxM, W, l, k, infty, False)
-	Kalice = linde_private_key(Alice[0], Bob[1])
-	Kbob = linde_private_key(Bob[0], Alice[1])
+	Alice = linde2_private_key(n, minM, maxM, W, k, l, infty, True)
+	Bob = linde2_private_key(n, minM, maxM, W, l, k, infty, False)
+	Kalice = linde_secret_key(Alice[0], Bob[1])
+	Kbob = linde_secret_key(Bob[0], Alice[1])
 	return Kalice == Kbob
 
