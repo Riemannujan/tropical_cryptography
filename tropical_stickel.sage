@@ -58,7 +58,6 @@ def heuristic_attack(A, B, U, V, D):
 			D: positive integer, maximum degree of the polynomial
 			U, V: public evaluations
 		Out: [K, True] if the key was found, [0, False] if not """
-	D = 10
 	i = 1
 	while i <= D:
 		j = 1
