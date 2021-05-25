@@ -1,2 +1,10 @@
-indent_style = tab
+# top-most EditorConfig file
+root = true
+
+# 4 space indentation
+[*.{cpp,h,cs,xaml,editorconfig}]
+indent_style = space
 indent_size = 4
+
+#   #   #
+#   #   #
