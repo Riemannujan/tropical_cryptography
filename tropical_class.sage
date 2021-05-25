@@ -88,9 +88,9 @@ def T_evaluate(P, A):
 	""" In: P: tropical polynomial
 			A: tropical matrix
 		Out: P(A) the evaluation of A by P """
-	B = P[0] * T_identity_matrix(T_rows(A))
-	for i in [1..len(P) - 1]:
-		B += P[i] * A**i
+	B = T_zero_matrix(T_rows(A), T_cols(A))
+	for i in range(len(P)):
+		B += P[i] * T_power(A, i)
 	return B
 
 def T_matrix_eq (A, B):
