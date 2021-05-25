@@ -122,58 +122,75 @@ def number_index(S, i):
 
 " Side function Rar "
 def rar(F):
-	H = [F[0]]
-	for S in F[1:]:
-		for i in range(len(H)):
-			if S[1] == H[i][1]:
-				H[i][0] += S[0]
-				break
-			elif i == len(H) - 1:
-				H += [S]
-	return H
+    H = [F[0]]
+    for S in F[1:]:
+        for i in range(len(H)):
+            if S[1] == H[i][1]:
+                H[i][0] += S[0]
+                break
+            elif i == len(H) - 1:
+                H += [S]
+    return H
 
+""" In: list of lists M
+  Out: union of the lists """
 def union(M):
-	""" In: M: list of lists
-		Out: union of all the lists """	
-	return [N[i] for N in M for i in range(len(N))]
+    return [N[i] for N in M for i in range(len(N))]
 
+""" In: lists L1, L2
+  Out: L1 - L2 """
 def difference(L1, L2):
-	""" In: L1, L2: lists
-		Out: L1 - L2 """
-	return [x for x in L1 if not(x in L2)]
+    return [x for x in L1 if not(x in L2)]
 
+""" In: cover P
+  Out: cover sorted by size of second component """
 def sort_cover(P):
-	""" In: P: cover
-		Out: cover sorted by size of the second component """
-	n = len(P)
-	Q = [S for S in P if len(S[1]) == max([len(S[1]) for S in P])]
-	P = difference(P, Q)
-	while len(Q) < n:
-		Q += [S for S in P if len(S[1]) == max([len(S[1]) for S in P])]
-		P = difference(P, Q)
-	return Q
+    n = len(P)
+    Q = [S for S in P if len(S[1]) == max([len(S[1]) for S in P])]
+    P = difference(P, Q)
+    while len(Q) < n:
+        Q += [S for S in P if len(S[1]) == max([len(S[1]) for S in P])]
+        P = difference(P, Q)
+    return Q
 
+" Out: the compressed set of cover, which contains all the minimal covers "
 def compressed_covers(F):
-	""" In: F: set of covers
-		Out: set of minimal covers """
-	if len(F) == 0:
-		return [[]]
-	Z = rar(F)
-	M = [S for S in F if len(difference(S[1], union([V[1] for V in Z if V != S]))) != 0]
-	N = union([S[1] for S in M])
-	P = [[S[0], difference(S[1], N)] for S in Z if len(difference(S[1], N)) != 0]
-	if len(P) > 0:
-		P = sort_cover(P)
-		L = [[S[0], difference(S[1], P[0][1])] for S in P if len(difference(S[1], P[0][1])) != 0]
-		K = [[P[0]] + S for S in compressed_covers(L)] + compressed_covers(P[1:])
-		return [M + S for S in K]
-	return [M]
+    if len(F) == 0:
+        return [[]]
+    Z = rar(F)
+    M = [S for S in F if len(difference(S[1], union([V[1] for V in Z if V != S]))) != 0]
+    N = union([S[1] for S in M])
+    P = [[S[0], difference(S[1], N)] for S in Z if len(difference(S[1], N)) != 0]
+    if len(P) > 0:
+        P = sort_cover(P)
+        L = [[S[0], difference(S[1], P[0][1])] for S in P if len(difference(S[1], P[0][1])) != 0]
+        K = [[P[0]] + S for S in compressed_covers(L)] + compressed_covers(P[1:])
+        return [M + S for S in K]
+    return [M]
+
 
 def cartesian(L):
 	""" In: list of lists L
 		Out: cartesian product of L[i] """
 	index = cartesian_product([[0..len(L[i])-1] for i in range(len(L))])
 	return [[L[i][C[i]] for i in range(len(L))] for C in index.list()]
+
+"""
+def sort_list(H):
+	In: list of list
+	print(H)
+	sorted_H = []
+	while len(H) != 0:
+		m = max(len(a) for a in H)
+		ind = max(number_index(a, 0) * number_index(a, 1) for a in H)
+		sorted_H += [a for a in H if ((len(a) < m) or ((len(a) == m) and (number_index(a,0) * number_index(a, 1) < ind)))]
+		if H == difference(H, sorted_H):
+			print(sorted_H + H)
+			return sorted_H + H
+		H = difference(H, sorted_H)
+	print(sorted_H)
+	return sorted_H
+"""
 
 def repack(ij, mm):
 	""" In: ij: cartesian product
@@ -185,7 +202,7 @@ def repack(ij, mm):
 def apply_attack(A, B, U, V, D, pm):
 	""" In: A, B: tropical public matrices
 			U, V: tropical matrices given by Alice and Bob
-			D: positive integer, degree of the polynomial
+			D: positive integer, degree of the matrix
 			pm: integer, min of the polynomial
 		Out: The private key K """
 	F = [S for S in [repack(ij, matrix_min(T_matrix_substraction(T_power(A, ij[0]) * T_power(B, ij[1]), T(-2*pm)*U))) for ij in cartesian([[0..D], [0..D]])] if S[0][0][2] <= 0]
@@ -200,20 +217,17 @@ def apply_attack(A, B, U, V, D, pm):
 
 ##################################
 
-def test(n, minM, maxM, D, minP, maxP):
-	""" In: n: positive integer, size of the matrix
-			minM, maxM: integers, range of the entries
-			D: degree of the polynomial
-			minP, maxP: range of the entries of the polynomial
-		Out: False if the attack didn't work,
-			time of the attack otherwize """
+D = 10
+pm = -10**3
+
+def test(n, minM, maxM):
 	[A, B] = public_key(n, minM, maxM, False)
-	[evA, evB, U] = private_key(A, B, D, minP, maxP)
-	[evA2, evB2, V] = private_key(A, B, D, minP, maxP)
+	[evA, evB, U] = private_key(A, B, D, pm, -pm)
+	[evA2, evB2, V] = private_key(A, B, D, pm, -pm)
 	K = secret_key(evA, evB, V)
 
 	t = cputime()
-	K_attack = apply_attack(A, B, U, V, D, minP)
+	K_attack = apply_attack(A, B, U, V, D, pm)
 	print(cputime() - t)
 	
 	return T_matrix_eq(K, K_attack)
