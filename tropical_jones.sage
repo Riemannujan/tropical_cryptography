@@ -44,7 +44,7 @@ def quasi_polynomial(D, dec, minP, maxP):
 			minP, maxP: min and max values of the coefficients
 		Out: [list of alphas, list of coefficients] """
 	L = [abs(QQ.random_element(0, dec)) for i in range(D)]
-	coef = [T(randint(minM, maxM)) for i in range(D)]
+	coef = [T(randint(minP, maxP)) for i in range(D)]
 	return [L, coef]
 
 def apply_quasi_polynomial(Q, A):
