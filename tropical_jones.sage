@@ -2,8 +2,8 @@ load('tropical_class.sage')
 load('jones_asp.py')
 
 """
-	A new approch of Grigoriev and Shpilrain's first protocol from the paper
-	Modifying the tropical version of stickel's key exchange protocol", 2019
+	A new approach of Grigoriev and Shpilrain's first protocol from the paper
+	"Modifying the tropical version of stickel's key exchange protocol", 2019
 	by A. Muanalifah and S. Sergeev
 
 	This protocol is based on Jones matrices
