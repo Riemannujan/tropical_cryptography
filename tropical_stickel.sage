@@ -63,12 +63,12 @@ def heuristic_attack(A, B, U, V, D):
 	while i <= D:
 		j = 1
 		while j <= D:
-			Tij = A**i * B**j
+			Tij = T_power(A, i) * T_power(B, j)
 			if T_check_non_infinite_matrix(Tij) == True:
 				Tij = T_matrix_substraction(U, Tij)
 				if T_check_constant_matrix(Tij):
-					X = Tij[0,0] * A**i
-					Y = B**j
+					X = Tij[0,0] * T_power(A, i)
+					Y = T_power(B, j)
 					return (X*V*Y, True)
 			j += 1
 		i += 1
