@@ -24,15 +24,15 @@ n = 10
 minM = -10**10
 maxM = 10**10
 D = 10
-minP = -10**10
-maxP = 10**10
+minP = -10**3
+maxP = 10**3
 infty = False
 
 def public_key(n, minM, maxM, infty):
 	""" In: n: positive integers, size of matrix
 			minM, maxM: integers, range of the entries of the matrices
 			infty: boolean, with or without infty
-		Out: 2 random tropical matrices A, B """
+		Out: 2 random matrices A, B """
 	A = T_random_matrix(n, n, minM, maxM, infty)
 	B = T_random_matrix(n, n, minM, maxM, infty)
 	return [A, B]
@@ -41,7 +41,7 @@ def private_key(A, B, D, minP, maxP):
 	""" In: A, B: tropical matrices
 			D: positive integer, degree of the polynomial
 			minP, maxP: integers, range of the entries of the polynomial
-		Out: private keys p1, p2, public tropical matrix U = p1(A)*p2(B) """
+		Out: private keys p1, p2, sent tropical matrix U = p1(A)*p2(B) """
 	p1 = T_random_polynomial(D, minP, maxP)
 	p2 = T_random_polynomial(D, minP, maxP)
 	evA = T_evaluate(p1, A)
@@ -50,7 +50,7 @@ def private_key(A, B, D, minP, maxP):
 
 def secret_key(evA, evB, V):
 	""" In: evA, evB, V: tropical matrices
-		Out: secret key p1(A) * V * p2(B) """
+		Out: private key p1(A) * V * p2(B) """
 	return evA * V * evB
 
 def heuristic_attack(A, B, U, V, D):
@@ -58,6 +58,7 @@ def heuristic_attack(A, B, U, V, D):
 			D: positive integer, maximum degree of the polynomial
 			U, V: public evaluations
 		Out: [K, True] if the key was found, [0, False] if not """
+	D = 10
 	i = 1
 	while i <= D:
 		j = 1
@@ -86,7 +87,7 @@ def test_attacks(n, minM, maxM, D, minP, maxP, infty, n_it):
 	for i in range(n_it):
 		[A, B] = public_key(n, minM, maxM, infty)
 		[evA, evB, U] = private_key(A, B, D, minP, maxP)
-		[evA2, evB2, V] = secret_key(A, B, D, minP, maxP)
+		[evA2, evB2, V] = private_key(A, B, D, minP, maxP)
 		t = cputime()
 		if heuristic_attack(A, B, U, V, D)[1]:
 			count += 1
