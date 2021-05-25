@@ -2,7 +2,7 @@
 root = true
 
 # 4 space indentation
-[*.{cpp,h,cs,xaml,editorconfig}]
+[*.{sage,lp,py,editorconfig}]
 indent_style = space
 indent_size = 4
 
