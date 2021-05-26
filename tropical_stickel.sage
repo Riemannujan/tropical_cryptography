@@ -73,7 +73,7 @@ def heuristic_attack(A, B, U, V, D):
 		i += 1
 	return (0, False)
 
-def test_attacks(n, minM, maxM, D, minP, maxP, infty, n_it):
+def tropical_stickel_test_attacks(n, minM, maxM, D, minP, maxP, infty, n_it):
 	""" In: n: positive integer, size of the matrices
 			minM, maxM: integers, range of the entries of the matrices
 			D: non-negative integer, degree of the polynomial
@@ -92,3 +92,20 @@ def test_attacks(n, minM, maxM, D, minP, maxP, infty, n_it):
 			count += 1
 		time += cputime() - t
 	return [count/n_it, time/n_it]
+
+"""
+	Commands used to compare average time and success rate depending on the
+	parameters :
+
+	* Matrices of dimension 10, range for entiers [-10^10,10^10]
+	  Polynomials of degree 10, range for coefficients [-10^3,10^3]
+	test_attacks(10,-10^10,10^10,10,-10^3,10^3,false,1000)
+
+	* Matrices of dimension 10, range for entiers [-10^10,10^10]
+	  Polynomials of degree 10, range for coefficients [-10^10,10^10]
+	test_attacks(10,-10^10,10^10,10,-10^10,10^10,false,1000)
+
+	* Matrices of dimension 10, range for entiers [0,10^10]
+	  Polynomials of degree 10, range for coefficients [0,10^10]
+	test_attacks(10,0,10^10,10,0,10^10,false,1000)
+"""
