@@ -207,7 +207,7 @@ def apply_attack(A, B, U, V, D, pm):
 		Out: The private key K """
 	F = [S for S in [repack(ij, matrix_min(T_matrix_substraction(T_power(A, ij[0]) * T_power(B, ij[1]), T(-2*pm)*U))) for ij in cartesian([[0..D], [0..D]])] if S[0][0][2] <= 0]
 	G = compressed_covers(F)
-	H = union([cartesian([[[c[0], c[1]] for c in V[0]] for V in S]) for S in G])
+	H = union([cartesian([[[c[0], c[1]] for c in R[0]] for R in S]) for S in G])
 	for S in H:
 		X = apply_simplex(simplex_matrix(F, D+1, S))
 		if X != False:
