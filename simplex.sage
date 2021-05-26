@@ -217,17 +217,23 @@ def apply_attack(A, B, U, V, D, pm):
 
 ##################################
 
-D = 10
-pm = -10**3
+def test(n, minM, maxM, D, minP, maxP, n_it):
+	n_time = 0
+	n_success = 0
+	for i in range(n_it):
+		[A, B] = public_key(n, minM, maxM, False)
+		[evA, evB, U] = private_key(A, B, D, minP, maxP)
+		[evA2, evB2, V] = private_key(A, B, D, minP, maxP)
+		K = secret_key(evA, evB, V)
 
-def test(n, minM, maxM):
-	[A, B] = public_key(n, minM, maxM, False)
-	[evA, evB, U] = private_key(A, B, D, pm, -pm)
-	[evA2, evB2, V] = private_key(A, B, D, pm, -pm)
-	K = secret_key(evA, evB, V)
-
-	t = cputime()
-	K_attack = apply_attack(A, B, U, V, D, pm)
-	print(cputime() - t)
+		t = cputime()
+		K_attack = apply_attack(A, B, U, V, D, minP)
+		n_time += t
+		print(cputime() - t)
 	
-	return T_matrix_eq(K, K_attack)
+		if T_matrix_eq(K, K_attack):
+			n_success += 1
+	
+	return [n_success, n_time/n_it]
+
+
