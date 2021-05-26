@@ -228,7 +228,7 @@ def test(n, minM, maxM, D, minP, maxP, n_it):
 
 		t = cputime()
 		K_attack = apply_attack(A, B, U, V, D, minP)
-		n_time += t
+		n_time += cputime() - t
 		print(cputime() - t)
 	
 		if T_matrix_eq(K, K_attack):
