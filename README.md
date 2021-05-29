@@ -22,7 +22,7 @@ Finally, the implementation of attacks on the above tropical protocols:
 - *Analysis of a key exchange protocol based on tropical matrix algebra, 2018* by M. Kotov and A. Ushakov: both attacks.
   - `tropical_stickel.sage` for the heuristic attack.
   - `tropical_simplex.sage` for the full attack based on the simplex algortihm. This implementation belongs to M. Kotov and A. Ushakov. Their original implementation in Gap is available at https://github.com/mkotov/tropical.
-- *Cryptanalysis of Stickel's Key Exchange Scheme 2008* by V. Shpilrain: `stickel_matrix_scheme.sage`.
+- *Cryptanalysis of Stickel's Key Exchange Scheme 2008* by V. Shpilrain: `stickel_matrix_scheme.sage` *(not added yet)*.
 - *Modifying the tropical version of Stickel's key exchange protocol, 2019* by A. Muanalifah and S. Sergeev:
     - `tropical_linde.sage` for the heuristic attacks on the Linde-De La Puente protocol.
 - *Remarks on a tropical key exchange system, 2020* by D. Rudy and C. Monico: `tropical_semidirect_product_attack.sage`.
