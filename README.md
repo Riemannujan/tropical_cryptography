@@ -5,7 +5,7 @@ This Git repository contains our implementation of some protocols of public key 
 It contains our implementation of the following protocols of tropical cryptography:
 - *Tropical cryptography I, 2014* by D. Grigoriev and V. Shpilrain: both protocols.
   - `tropical_stickel.sage` for the first protocol.
-  - `tropical_public_key_encryption.sage` for the second protocol *(not added yet)*.
+  - `tropical_public_key_encryption.sage` for the second protocol.
 - *Tropical cryptography II, 2018* by D. Grigoriev and V. Shpilrain: first protocol.
   - `tropical_semidirect_product.sage` for the first protocol, since the second protocol is not considered in our report.
 - *Modifying the tropical version of Stickel's key exchange protocol, 2019* by A. Muanalifah and S. Sergeev: both protocols.
