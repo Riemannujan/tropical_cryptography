@@ -137,12 +137,17 @@ def T_matrix_less(A, B):
 	return True
 
 def T_power(A, p):
-	""" In: A: tropical matrix
-			p: non-negative integer
-		Out: A**p the p-th power of A """
-	if p == 0:
-		return T_identity_matrix(T_rows(A))
-	return A**p
+    """ In: A: tropical matrix
+            p: non-negative integer
+        Out: A**p the p-th power of A """
+    result = T_identity_matrix(T_rows(A))
+    while p > 0:
+        if p & 1:
+            result = result * A
+        A = A**2
+        p = p >> 1
+    return result
+
 
 def T_check_constant_matrix(A):
 	""" In: A: tropical matrix
