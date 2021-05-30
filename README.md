@@ -28,7 +28,7 @@ Finally, the implementation of attacks on the above tropical protocols:
 - *Remarks on a tropical key exchange system, 2020* by D. Rudy and C. Monico: `tropical_semidirect_product_attack.sage`.
 - *A closer look at the tropical cryptography, 2020* by S. Isaac and D. Kahrobaei: their implementation is available at https://github.com/steveisaac/TropicalCryptography.
 
-A last file `tropical_algebra.sage` contains the implementation of general functions required for most of our programs.
+A last file `tropical_class.sage` contains the implementation of general functions required for most of our programs.
 
 
 A. Herledan Le Merdy and C. Foucault
