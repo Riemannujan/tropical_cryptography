@@ -178,10 +178,6 @@ def TEST_linde_attack(n, minM, maxM, minW, maxW, infty, n_it):
 		test_heuristic_attack(10,-100,20,-100,100,0,1000)
 		test_heuristic_attack(20,-100,20,-100,100,0,1000)
 		test_heuristic_attack(30,-100,20,-100,100,0,1000)
-
-	With infty:
-		test_heuristic_attack(20,-100,20,-100,100,25,1000)
-		test_heuristic_attack(20,-100,20,-1000,1000,50,1000)
 """
 
 
