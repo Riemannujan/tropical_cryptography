@@ -104,7 +104,7 @@ def linde_computation(n, minM, maxM, minW, maxW, infty):
 	W = T_random_matrix(n, n, minW, maxW, infty)
 	Alice = linde1_private_key(n, minM, maxM, W, infty)
 	Bob = linde1_private_key(n, minM, maxM, W, infty)
-	K = linde_private_key(Alice[0], Bob[1])
+	K = linde_secret_key(Alice[0], Bob[1])
 	return [Alice[1], Bob[1], W, K]
 
 def dominant_attack(cryptosystem):
